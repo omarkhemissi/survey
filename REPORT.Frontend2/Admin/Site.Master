@@ -1,0 +1,254 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="REPORT.Frontend.AdminSiteMaster" %>
+
+<!DOCTYPE html>
+<html runat="server" xmlns="http://www.w3.org/1999/xhtml" lang="<%$ Resources:EP,ep_lbl_CurrLang%>">
+<head runat="server">
+    <title></title>
+
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+<%--    <asp:PlaceHolder runat="server">
+        <%: System.Web.Optimization.Styles.Render("~/stylesheet/css") %>
+    </asp:PlaceHolder>
+    <asp:PlaceHolder runat="server">
+        <%: System.Web.Optimization.Scripts.Render("~/scripts/lib") %>
+    </asp:PlaceHolder>--%>
+
+    <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="/assets/css/sky-forms.css" rel="stylesheet" />
+    <link href="/assets/css/layout.css" rel="stylesheet" />
+    <link href="/assets/css/essentials.css" rel="stylesheet" />
+    <link href="/assets/css/header-default.css" rel="stylesheet" />
+    <link href="/assets/css/footer-default.css" rel="stylesheet" />
+
+    <script src="/assets/plugins/modernizr.min.js?v=33"></script>
+    <script src="/assets/plugins/jquery-2.1.4.min.js?v=33"></script>
+    <script src="/assets/dataPicker/jquery-ui.min.js?v=33"></script>
+    <script src="/assets/dataPicker/jquery.ui.datepicker-ar.js?v=33"></script>
+    <script src="/assets/dataPicker/Date.js?v=33"></script>
+    <script src="/assets/ControlsUI.js?v=33"></script>
+    <script src="/Scripts/jquery.blockUI.js?v=33"></script>
+
+    <%--* OK --%>
+    <link href="/assets/css/JqueryUI.css" rel="stylesheet" />
+    <link href="/assets/plugins/owl-carousel/owl.pack.css" rel="stylesheet" />
+    <link href="<%$ Resources:EP,ep_lbl_CurrLangCss%>" rel="stylesheet" />
+    <link href="/assets/css/select2.min.css" rel="stylesheet" />
+    <link href="/assets/css/select2-bootstrap.min.css" rel="stylesheet" />
+
+    
+    <script src="/assets/plugins/select2.full.min.js?v=33"></script>
+    <script src="/Scripts/jquery.dataTables.min.js?v=33"></script>
+    <%-- OK *--%>
+
+    <script src="/Scripts/ajax-libs-jquery-json-2.5.1/jquery.json.min.js?v=33"></script>
+    <!--[if lte IE 8]> 
+			<script src="/assets/plugins/respond.js?v=33"></script>
+		<![endif]-->
+    <script type="text/javascript">
+        var commonJSUtil = (function () {
+            return {
+                showValidationPopUp: function (allowNext, nextClickCallback) {
+                    var myButtons = [];
+                    if (allowNext) {
+                        myButtons.push({
+                            text: '<%= Resources.EP.ep_lbl_Next %>',
+                            "class": 'btn btn-default',
+                            click: nextClickCallback
+                        });
+                    }
+                    myButtons.push({
+                        text: '<%= Resources.EP.ep_lbl_Back %>',
+                        "class": 'btn btn-default',
+                        click: function () {
+                            $.unblockUI();
+                            $(this).dialog("close");
+                        }
+                    });
+                    $("#divStepValidation").dialog({
+                        resizable: false,
+                        height: "auto",
+                        width: 600,
+                        modal: true,
+                        buttons: myButtons
+                    });
+                    $('.ui-dialog-titlebar').hide();
+                },
+                beforeConfirmation: function () {
+                    $('.itemToHide').hide();
+                    $('input[type="text"]').not('.fixedstate-field').attr("readonly", true);
+                    $('input[type="number"]').not('.fixedstate-field').attr("readonly", true);
+                    $('input[type="checkbox"]').not('.fixedstate-field').prop("disabled", true);
+                    $('input[type="radio"]').not('.fixedstate-field').prop("disabled", true);
+                    $('textarea').not('.fixedstate-field').attr("readonly", true);
+                    $('select').not('.fixedstate-field').prop("disabled", true);
+                },
+                confirmationBack: function () {
+                    $('.itemToHide').show();
+                    $('input[type="text"]').not('.fixedstate-field').removeAttr("readonly");
+                    $('input[type="number"]').not('.fixedstate-field').removeAttr("readonly");
+                    $('input[type="checkbox"]').not('.fixedstate-field').removeAttr("disabled");
+                    $('input[type="radio"]').not('.fixedstate-field').removeAttr("disabled");
+                    $('textarea').not('.fixedstate-field').removeAttr("readonly");
+                    $('select').not('.fixedstate-field').removeAttr("readonly");
+                },
+                validateEMail: function (value) {
+                    
+                },
+                validateMobile: function (value) {
+
+                },
+                validateIntNumber: function (value) {
+
+                },
+                validateNumber: function (value) {
+
+                },
+                validateGroup: function (validationGroup) {
+                    var validationResult = Page_ClientValidate(validationGroup);
+                    return validationResult;
+                },
+            };
+        })();
+
+        function CallJason(CallType, Methodurl, isASync, parameters, SuccessCallBack, sender, DontBlock) {
+
+            if (isASync) {
+                //$.blockUI({
+                //    message: '<h3 class="padding20 text-center"><img src="/Assets/images/refresh.gif" /> برجاء الانتظار ...</h3>',
+                //    css: { border: '2px solid #a00' }
+                //});
+
+                //$(sender).blockUI({
+                //    message: '<h1 style="direction:rtl;float:right;"><img src="busy.gif" /> برجاء الانتظار ...</h1>',
+                //    css: { border: '3px solid #a00' }
+                //});
+            }
+
+            $.ajax({
+                type: CallType,
+                url: Methodurl,
+                async: isASync,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    SuccessCallBack(msg);
+                },
+                error: function (msg) {
+                    $.unblockUI();
+
+                    if (msg && msg.status && msg.status == 401) // Handle Session Timeout
+                        window.location.href = '/';
+
+                    HandlingErrorMessages(msg);
+                }
+            });
+        }
+        function HandlingErrorMessages(ErrMsg) {
+        }
+        $(document).ajaxStop($.unblockUI);
+    </script>
+    
+
+</head>
+<body class="smoothscroll" runat="server" dir="<%$ Resources:EP,ep_lbl_rtlltr%>">
+    <form id="form1" runat="server">
+        <asp:ScriptManager runat="server"></asp:ScriptManager>
+        <div id="wrapper">
+           
+            <div class="container">
+                <asp:LoginView ID="LoginView1" runat="server">
+                    <LoggedInTemplate>
+                        <div id="topNav" class="LeftNav">
+                            <ul class="nav nav-pills nav-main">
+                                <li class="dropdown dropdowns"><a class="" href="/Admin/"><i class="fontsize25 fa fa-home faa"></i><span>
+                                    <asp:Literal runat="server" Text="<%$ Resources:EP,ep_lbl_HomePage%>" /></span></a>
+                                </li>
+                               
+                                <li class="dropdown dropdownvs">
+                                    <asp:LinkButton ID="lnkLang" class="" runat="server" CommandArgument="<%$ Resources:EP,ep_lbl_LCulture %>" OnClick="lnkLang3_Click" CausesValidation="false">
+                                      <i class="fontsize25 fa fa-language faa"></i><span ><asp:Literal runat="server" Text="<%$ Resources:EP,ep_lbl_LangTextValue%>" /></span> </asp:LinkButton>
+                                </li>
+                                <li class='dropdown dropdownloc'>
+                                    <asp:LinkButton OnClick="lnkSignout_Click" ID="lnkWindowsSignout" runat="server" CausesValidation="false"><i class="fontsize25 fa fa-sign-out"></i><span><asp:Literal runat="server" Text="<%$ Resources:EP,ep_lbl_SignOutText%>" /> </span></asp:LinkButton>
+                                </li>
+                                <li class="user-info-container">
+                                    <div class="welcomeMessage">
+                                        <asp:Label runat="server" ID="lblUserWelcome"><%= (REPORT.Frontend.SessionManager.UserItem == null || REPORT.Frontend.SessionManager.UserItem.DisplayName==null)? "" : Resources.EP.ep_lbl_WelcomeMessage %></asp:Label>
+                                        - 
+                                        <asp:Label runat="server" ID="lblUserName"><%= REPORT.Frontend.SessionManager.UserItem == null? "" : REPORT.Frontend.SessionManager.UserItem.DisplayName %></asp:Label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </LoggedInTemplate>
+                    <AnonymousTemplate>
+                        <div id="topNav" class="LeftNav">
+                            <ul class="nav nav-pills nav-main">
+                                <li class='dropdown dropdownloc'>
+                                    <asp:LinkButton ID="lbSignin" runat="server" PostBackUrl="~/Login.aspx" CausesValidation="false"><i class="fontsize25 fa fa-sign-in"></i><span><asp:Literal runat="server" Text="<%$ Resources:EP, ep_lbl_SignInText%>" /> </span></asp:LinkButton>
+                                </li>
+                                <li class="dropdown dropdownvs">
+                                    <asp:LinkButton ID="lnkLang" class="" runat="server" CommandArgument="<%$ Resources:EP,ep_lbl_LCulture %>" OnClick="lnkLang3_Click" CausesValidation="false">
+                                      <i class="fontsize25 fa fa-language faa"></i><span ><asp:Literal runat="server" Text="<%$ Resources:EP,ep_lbl_LangTextValue%>" /></span> </asp:LinkButton>
+                                </li>
+                            </ul>
+                        </div>
+                    </AnonymousTemplate>
+                </asp:LoginView>
+            </div>
+            <div class="container">
+                <section class="page-title">
+                    <header>
+                        <asp:SiteMapDataSource ID="MainSiteMapDataSource" runat="server" ShowStartingNode="true" />
+                        <asp:SiteMapPath ID="MainSiteMapPath" runat="server" PathSeparator=" / " SkipLinkText="" RenderCurrentNodeAsLink="false" CssClass="sitemap-container">
+                        </asp:SiteMapPath>
+                        <span id="divDynamicTitleContainer" class="sitemap-dynamic-title">
+                            <asp:Label runat="server" Text=" - "></asp:Label>
+                            <asp:Label ID="lblDynamicTitle" runat="server" Text=""></asp:Label>
+                        </span>
+                        <span id="divSubmitContainer" class="divSubmitContainer pullMaster sitemap-container" style="display:none">
+                        </span>
+                    </header>
+                </section>
+            </div>
+            <div class="container">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+            <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js?v=33"></script><![endif]-->
+            <!--[if IE]><html class="ie" lang="ar"> <![endif]-->
+            <div class="container">
+                <footer id="footer">
+                    <hr />
+                    <div class="copyright">
+                        <div class="container text-center">
+                            <asp:Literal runat="server" Text="<%$ Resources:EP,ep_lbl_copyright%>" />
+                        </div>
+                    </div>
+                </footer>
+                <a href="#" id="toTop"></a>
+            </div>
+        </div>
+    </form>
+    <!-- JAVASCRIPT FILES -->
+    <%--<asp:PlaceHolder runat="server">
+        <%: System.Web.Optimization.Scripts.Render("~/scripts/footer") %>
+    </asp:PlaceHolder>--%>
+
+    <script src="/assets/plugins/jquery.isotope.js?v=33"></script>
+    <script src="/assets/plugins/masonry.js?v=33"></script>
+    <script src="/assets/plugins/bootstrap/js/bootstrap.min.js?v=33"></script>
+    <script src="/assets/js/scripts.js?v=33"></script>
+
+    <script>
+        $.fn.datepicker.defaults.format = "dd/mm/yyyy";
+        $.fn.datepicker.defaults.autoclose = true;
+    </script>
+</body>
+</html>
