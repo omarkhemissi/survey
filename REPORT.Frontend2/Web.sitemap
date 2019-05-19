@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap enableLocalization="true" xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="~/Default.aspx" title="$resources:EP,ep_lbl_HomePage" description="$resources:EP,ep_lbl_HomePage">
+    
+    <siteMapNode url="~/Error/Error.aspx" title="$resources:EP,ep_lbl_ErrorPage" description="$resources:EP,ep_lbl_ErrorPage" />
+    <siteMapNode url="~/Login.aspx" title="$resources:EP,ep_lbl_Login" description="$resources:EP,ep_lbl_Login" />
+    <siteMapNode url="~/Profile/Logout.aspx" title="$resources:EP,ep_lbl_Logout" description="$resources:EP,ep_lbl_Logout" />
+
+    <siteMapNode url="~/Admin/ManageSurvey.aspx" title="$resources:EP,ep_lbl_JobCandCount" description="$resources:EP, ep_lbl_JobCandCount" />
+    
+  </siteMapNode>
+</siteMap>
